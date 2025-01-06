@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial sans-serif;
+    font-size: 16px;
+    color: black;
+}
+body {
+    background-color: lightblue;
+
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    margin: 0 20px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    width: 200px;
+
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+body {
+    background-image: url('bus.wallpaper.jpg');
+    background-size: cover;
+}
+.nav-button {
+    background-color: gray;
+    color: white;
+    border: none;
+    padding: 10px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: darkgray;
+}
+
+.login-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: darkblue;
+}
+
+h1{
+    color: black;
+    font-weight: bold;
+}
+.container-1 {
+    float: right;
+    column-gap: 80px;
+    width: auto;
+    position: relative;
+    top: 10%;
+    padding:  20px;
+
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.container-child{
+    background: white;
+    width: auto;
+    padding: 1.5rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container {
+    background: white;
+    width: 450px;
+    padding: 1.5rem;
+    margin: 50px auto;
+    border-radius: 10px;
+}
+
+form{
+    margin: 0 2rem;
+}
+
+.form-title{
+    color: black;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1.3rem;
+    margin-bottom: 0.4rem;
+}
+
+.links {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 4rem;
+    margin-top: 0.9rem;
+}
+
+button{
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 1rem;
+
+}
+input{
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0;
+
+}
+
+a{
+    color: blue;
+    text-decoration: none;
+}
+
+.login {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#dialogBox::backdrop {
+    opacity: 1;
+    background-color: rgb(25, 25, 170);
+    backdrop-filter: blur(5px);
+}
+#dialogBox {
+    box-shadow: 5px 10px #888888;
+    border-radius: 8px;
+    border: none;
+}
+#dialogBox header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#closeDialogFooter {
+    background-color: gray;
+    border: none;
+    color: white;
+    padding: 12px 32px;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
