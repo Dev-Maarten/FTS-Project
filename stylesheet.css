@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind url("https://cdn.tailwindcss.com");
 
 * {
     margin: 0;
