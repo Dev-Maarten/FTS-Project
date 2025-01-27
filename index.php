@@ -1,21 +1,4 @@
-<?php
-
-
-session_start();
-
-define('DATABASE_HOST', 'localhost');
-define('DATABASE_USER', 'root');
-define('DATABASE_PASSWORD', 'Snoes2425!');
-define('DATABASE_NAME', 'festivals');
-define('APP_URL', 'festivals.localhost');
-define('APP_NAME', 'FTS');
-$db = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME);
-if (mysqli_connect_errno()) {
-    die("connection failed: " . mysqli_connect_error());
-}
-
-
-
+<?php require "connect.php";
 ?>
 <!doctype html>
 <html lang="en">
@@ -33,10 +16,10 @@ if (mysqli_connect_errno()) {
     <script src="https://cdn.tailwindcss.com"></script>
 
 
-    <?php if ($_SERVER['REQUEST_URI'] == 'website-folder/admin/admin.php/')
+    <?php if ($_SERVER['REQUEST_URI'] == 'website-folder/admin/index.php/')
     ?>
 
-    <section class="bg-gray-500">
+    <section class="bg-gray-200">
         <div class="container mx-auto px-4">
             <h2 class="text-2xl text-white font-bold mb-4">add a new festival</h2>
             <?php if (isset($create_festival_error)){ ?>
@@ -47,13 +30,12 @@ if (mysqli_connect_errno()) {
 
                 <div class="mb-4">
                     <label for="name" class="block mb-2>">name</label>
-                    <input type="text" id="name" name="name" required
-                           class="w-1/2 p-2 border rounded ">
+                    <input type="text" id="name" name="name" required class="w-full p-2 border rounded">
                 </div>
 
                 <div class="mb-4">
-                    <label for="location" class="block mb-2>">locatie</label>
-                    <input type="text" id="location" name="location" required class="w-1/2 p-2 border-rounded">
+                    <label for="location" class="block mb-2>">location</label>
+                    <input type="text" id="location" name="location" required class="w-full p-2 border-rounded">
                 </div>
 
                 <div class="mb-4">
@@ -66,14 +48,36 @@ if (mysqli_connect_errno()) {
                     <input type="text" id="vertrek" name="vertrek" required class="w-full p-2 border-rounded">
                 </div>
 
+
                 <div class="mb-4">
-                    <label for="price" class="block mb-2>">prijs</label>
-                    <input type="text" id="price" name="price" required class="w-full p-2 border-rounded">
+                <label for="vertrekpunt" class="block mb-2>">vertrekpunt</label>
+                <input type="text" id="vertrekpunt" name="vertrekpunt" required class="w-full p-2 border-rounded">
+                </div>
+
+                <div class="mb-4">
+                    <label for="time" class="block mb-2>">vertrektijd</label>
+                    <input type="text" id="time" name="time" required class="w-full p-2 border-rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="time2" class="block mb-2>">vertrektijd2</label>
+                    <input type="text" id="time2" name="time2" required class="w-full p-2 border-rounded">
+                </div>
+
+                <div class="mb-4">
+                    <label for="price" class="block mb-2>">price</label>
+                    <input type="number" id="price" name="price" required class="w-full p-2 border-rounded">
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="block mb-2>">description</label>
+                    <input type="text" id="description" name="description" class="w-full p-2 border-rounded" required>
+
                 </div>
 
                 <div class="mb-4">
                     <label for="image" class="block mb-2>">image</label>
-                    <input type="file" id="image" name="image" class="w-full p-2 border-rounded">
+                    <input type="file" id="image" name="image" class="w-full p-2 border-rounded" accept="image/*">
+
                 </div>
 
                 <button type="submit" name="create_new_festival"  class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">

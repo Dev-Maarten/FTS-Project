@@ -79,28 +79,11 @@ h1{
     color: black;
     font-weight: bold;
 }
-.container-1 {
-    float: right;
-    column-gap: 80px;
-    width: auto;
-    position: relative;
-    top: 10%;
-    padding:  20px;
 
-}
 .row:after {
     content: "";
     display: table;
     clear: both;
-}
-.container-child{
-    background: white;
-    width: auto;
-    padding: 1.5rem;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 .container {
@@ -111,6 +94,14 @@ h1{
     border-radius: 10px;
 }
 
+.container-main{
+    background: white;
+    width: 450px;
+    padding: 1.5rem;
+    margin: 50px auto;
+    border-radius: 10px;
+    width: 33%;
+}
 form{
     margin: 0 2rem;
 }
@@ -159,28 +150,46 @@ a{
     align-items: flex-end;
 }
 
-#dialogBox::backdrop {
-    opacity: 1;
-    background-color: rgb(25, 25, 170);
-    backdrop-filter: blur(5px);
-}
-#dialogBox {
-    box-shadow: 5px 10px #888888;
-    border-radius: 8px;
-    border: none;
-}
-#dialogBox header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.adbutton:hover {
+    background-color: limegreen;
 }
 
-#closeDialogFooter {
+.festival-table-head{
     background-color: gray;
-    border: none;
-    color: white;
-    padding: 12px 32px;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
+    color: darkgray;
+    padding: 6px 3rem;
+
 }
+
+.festival-table-row{
+    padding: 3rem 6px;
+
+}
+
+.main {
+    display: flex;
+    height: 98vh;
+    gap: 25px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-content: space-around;
+    background: white;
+}
+
+.l-side {
+    width: 180px;
+    background-color: lightgray;
+    border: 2px solid black;
+}
+
+.center {
+    flex-grow: 1;
+    background-color: white;
+}
+
+.r-side {
+    width: 180px;
+    background-color: lightgray;
+    border: 2px solid black;
+}
+

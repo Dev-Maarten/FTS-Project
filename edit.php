@@ -1,82 +1,71 @@
 <?php
+require "connect.php";
 
-define('DATABASE_HOST', 'localhost');
-define('DATABASE_USER', 'root');
-define('DATABASE_PASSWORD', 'Snoes2425!');
-define('DATABASE_NAME', 'Festivals');
-define('APP_URL', 'festivals.localhost');
-define('APP_NAME', 'FTS');
-
-$db = mysqli_connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME);
-if (mysqli_connect_errno()) {
-    die("connection failed: " . mysqli_connect_error());
-}
 if(str_contains($_SERVER["REQUEST_URI"],"edit.php")) {
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) { //check id
         die("Invalid or missing ID.");
     }
 
-    $festival_detail = isset($_GET['id']) ? $_GET['id'] : 0; //get id from url
+    $festival_id = (int)$_GET['id'];
 
     $stmt = $db->prepare("SELECT * FROM `festivals` WHERE `id` = ?"); // prepare queries
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param("i", $festival_id);
     $stmt->execute();
-    $festival_detail = $stmt->get_result()->fetch_assoc();
+    $result = $stmt->get_result();
 
-    if (!$festival_detail) {
+    if ($result && $result->num_rows > 0) {
+        $festival_detail = $result->fetch_assoc();
 
-            echo "Debugging: Festival not found. Query result is empty.<br>";
-            echo "ID being searched: " . htmlspecialchars($festival_id) . "<br>";
-            echo "SQL Error (if any): " . $db->error . "<br>";
-            die();
     }
 
-    if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update festival'])) {
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update festival'])) {
         $name = $_GET['name'] ?? '';
         $location = $_GET['location'] ?? '';
         $duration = $_GET['duration'] ?? '';
         $vertrek = $_GET['vertrek'] ?? '';
         $price = $_GET['price'] ?? '';
+        $description = $_GET['description'] ?? '';
+        $time = $_GET['time'] ?? '';
 
-        if(isset($_FILES['image'])  && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $image = uniqueid() .'.'. pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        var_dump($_POST);
+        $image = null;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
             move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
         }
 
-        $query = " UPDATE festivals SET name = ?, location = ?, duration = ?, vertrek = ?, price = ?,";
-        if($image) {
-            $query .= " image = ?";
+        $query = " UPDATE festivals SET name = ?, location = ?, duration = ?, vertrek = ?, price = ?, description = ?";
+        $params = [$name, $location, $duration, $vertrek, $price, $description];
+        $types = "sssds";
+
+        if ($image) {
+            $query .= ", image = ?";
             $params[] = $image;
+            $types .= "s";
         }
+
         $query .= "WHERE id = ?";
         $params[] = $festival_id;
+        $types .= "i";
 
-        $sql = "SELECT * FROM festivals WHERE id = $festival_detail";
-    $result = $db->query($sql); // get data from database
 
-    if ($result && $result->num_rows > 0) {
-        $festival_detail = $result->fetch_assoc() ;  // check if result was foudn
-        }
+        echo "generated query: " . $query; "<br>";
+        echo "parameters: ";
+        print_r($params);
 
-    $id = (int)$_GET['id'];    if (!$festival_detail) {
+        $stmt = $db->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
 
-    }
-        echo "Festival name: " . htmlspecialchars($festival_detail)['name'];
-    }
-    else {
-        die("no festival found");
-    }
 
-    $stmt = $db->prepapre($query);
-    $stmt->bind_param(str_repeat("s", count($params)), ...$params);
-    $stmt->execute();
-    $stmt->close();
-
-}
-        if(!$id) {
-            header("Location: /admin");
+        if ($stmt->affected_rows > 0) {
+            header("Location: /admin/admin.php");
             exit;
+        } else  {
+            echo"no changes made";
         }
+    }
+}
     ?>
 <!doctype html>
 <html lang="en">
@@ -87,6 +76,7 @@ if(str_contains($_SERVER["REQUEST_URI"],"edit.php")) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>edit festival</title>
     <link href="stylesheet.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
@@ -97,20 +87,15 @@ if(str_contains($_SERVER["REQUEST_URI"],"edit.php")) {
             <h2 class="text-2xl text-white font-bold mb-4">edit festival</h2>
 
 
-            <form action="admin.php" method="post">
+            <form action="admin.php" method="post" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="name" class="block mb-2>">name</label>
-                    <input type="text" id="name" name="name" value="<?php echo $festival_detail['name'];?>" required class="w-1/2 p-2 border rounded ">
+                    <input type="text" id="name" name="name" value="<?php echo $festival_detail['name'];?>" required class="w-full p-2 border rounded ">
                 </div>
 
                 <div class="mb-4">
                     <label for="location" class="block mb-2>">locatie</label>
-                    <input type="text" id="location" name="location" value="<?php echo $festival_detail['locatie'];?>" required class="w-1/2 p-2 border-rounded">
-                </div>
-
-                <div class="mb-4">
-                    <label for="rating" class="block mb-2>">rating</label>
-                    <input type="text" id="rating" name="rating" value="<?php echo $festival_detail['rating'];?>" required class="w-full p-2 border-rounded">
+                    <input type="text" id="location" name="location" value="<?php echo $festival_detail['location'];?>" required class="w-full p-2 border-rounded">
                 </div>
 
                 <div class="mb-4">
@@ -125,12 +110,17 @@ if(str_contains($_SERVER["REQUEST_URI"],"edit.php")) {
 
                 <div class="mb-4">
                     <label for="price" class="block mb-2>">prijs</label>
-                    <input type="text" id="price" name="price" value="<?php echo $festival_detail['prijs'];?>" required class="w-full p-2 border-rounded">
+                    <input type="text" id="price" name="price" value="<?php echo $festival_detail['price'];?>" required class="w-full p-2 border-rounded">
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="block mb-2>">description</label>
+                    <input type="text" id="description" name="description" value="<?php echo $festival_detail['description'];?>" required class="w-full p-2 border-rounded">
                 </div>
 
                 <div class="mb-4">
                     <label for="image" class="block mb-2>">image</label>
-                    <input type="file" id="image" name="image" value="<?php echo $festival_detail['image'];?>" class="w-full p-2 border-rounded">
+                    <input type="file" id="image" name="image"  class="w-full p-2 border-rounded">
                 </div>
 
                 <button type="submit" name="update festival"  class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
